@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sangeet Ceremony - Sakshi & Anupam</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+            background-color: #4a1525; /* Fallback color matching theme */
+        }
+
+        .hero-container {
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+            /* Replace with your hosted image URL if deploying online */
+            background-image: url('background.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 30px 20px;
+        }
+
+        /* Dark overlay gradient at the bottom to make text/search readable */
+        .hero-container::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60%;
+            background: linear-gradient(to top, rgba(58, 14, 27, 0.95) 30%, rgba(58, 14, 27, 0.4) 70%, transparent 100%);
+            z-index: 1;
+        }
+
+        .content-overlay {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding-bottom: 20px;
+        }
+
+        .event-date {
+            color: #f3e5ab;
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            font-weight: 600;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .search-box-wrapper {
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 16px 20px;
+            font-size: 1rem;
+            border: 2px solid #d4af37;
+            border-radius: 30px;
+            background-color: rgba(255, 255, 255, 0.95);
+            color: #333;
+            outline: none;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            border-color: #fff;
+            background-color: #fff;
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+        }
+
+        .results-container {
+            width: 100%;
+            max-height: 280px;
+            overflow-y: auto;
+            text-align: left;
+            display: none;
+        }
+
+        .result-card {
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            border-left: 5px solid #d4af37;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .result-table {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #4a1525;
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-badge {
+            background-color: #4a1525;
+            color: #f3e5ab;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+        }
+
+        .result-group {
+            font-size: 0.95srem;
+            color: #555;
+            line-height: 1.4;
+        }
+
+        .no-results {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            border-radius: 10px;
+            color: #4a1525;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="hero-container">
+        <div class="content-overlay">
+            <div class="event-date">Sept 20th, 2026</div>
+            <div class="search-box-wrapper">
+                <input type="text" id="guestSearch" class="search-input" placeholder="Search your name here..." oninput="handleSearch()">
+            </div>
+            <div id="results" class="results-container"></div>
+        </div>
+    </div>
+
+    <script>
+        // Cleaned dataset matching your mapping (Side info removed, grouped properly)
+        const seatingData = [
+            { name: "Gayatri Singh", group: "Gayatri Singh, Mansher Singh, Virat, Yuvraj, Rhea & Maya", table: "Table 7" },
+            { name: "Mansher Singh", group: "Gayatri Singh, Mansher Singh, Virat, Yuvraj, Rhea & Maya", table: "Table 7" },
+            { name: "Virat", group: "Gayatri Singh, Mansher Singh, Virat, Yuvraj, Rhea & Maya", table: "Table 7" },
+            { name: "Yuvraj", group: "Gayatri Singh, Mansher Singh, Virat, Yuvraj, Rhea & Maya", table: "Table 7" },
+            { name: "Rhea", group: "Gayatri Singh, Mansher Singh, Virat, Yuvraj, Rhea & Maya", table: "Table 7" },
+            { name: "Maya", group: "Gayatri Singh, Mansher Singh, Virat, Yuvraj, Rhea & Maya", table: "Table 7" },
+            { name: "Anupam Chauhan", group: "Anupam Chauhan & Sakshi Shiromani", table: "Head Table / Center / Stage" },
+            { name: "Sakshi Shiromani", group: "Anupam Chauhan & Sakshi Shiromani", table: "Head Table / Center / Stage" },
+            { name: "Nilida Shiromani", group: "Shiromani Family", table: "Table 4" },
+            { name: "Sudhanshu Shiromani", group: "Shiromani Family", table: "Table 4" },
+            { name: "Shesh Shiromani", group: "Shiromani Family", table: "Table 5" },
+            { name: "Shikhar Shiromani", group: "Shiromani Family", table: "Table 5" },
+            { name: "Sadhna Chauhan", group: "Sadhna & Virendra Chauhan", table: "Table 7" },
+            { name: "Virendra Chauhan", group: "Sadhna & Virendra Chauhan", table: "Table 7" },
+            { name: "Abhinav Singh Verma", group: "Abhinav Singh Verma & Anjali Pathak", table: "Table 9" },
+            { name: "Anjali Pathak", group: "Abhinav Singh Verma & Anjali Pathak", table: "Table 9" },
+            { name: "Alfredo Ormeno", group: "Alfredo Ormeno", table: "Table 2" },
+            { name: "Rajendra Gandhi", group: "Rajendra & Savita Gandhi", table: "Table 6" },
+            { name: "Savita Gandhi", group: "Rajendra & Savita Gandhi", table: "Table 6" },
+            { name: "Ajay Arora", group: "Ajay & Divya Arora", table: "Table 8" },
+            { name: "Divya Arora", group: "Ajay & Divya Arora", table: "Table 8" },
+            { name: "Mithali Chikalkar", group: "Mithali Chikalkar & Mithali's Guest", table: "Table 6" },
+            { name: "Mithali's Guest", group: "Mithali Chikalkar & Mithali's Guest", table: "Table 6" },
+            { name: "Surender Singh", group: "Surender & Nita Singh", table: "Table 3" },
+            { name: "Nita Singh", group: "Surender & Nita Singh", table: "Table 3" },
+            { name: "Nawal Kishore Singh", group: "Nawal Kishore & Gayatri Singh", table: "Table 7" },
+            { name: "Gayatri Singh", group: "Nawal Kishore & Gayatri Singh", table: "Table 7" },
+            { name: "Sudharshan Malik", group: "Sudharshan Malik", table: "Table 6" },
+            { name: "Radhakrishan Gandhi", group: "Gandhi Family", table: "Table 6" },
+            { name: "Sabina Gandhi", group: "Gandhi Family", table: "Table 6" },
+            { name: "Harshita Lall", group: "Harshita Lall & Joseph", table: "Table 9" },
+            { name: "Joseph", group: "Harshita Lall & Joseph", table: "Table 9" },
+            { name: "Nirmal Das", group: "Das Family", table: "Table 4" },
+            { name: "Dhruv Das", group: "Das Family", table: "Table 5" },
+            { name: "Niraj Das", group: "Niraj & Ryan Das", table: "Table 4" },
+            { name: "Ryan Das", group: "Niraj & Ryan Das", table: "Table 5" },
+            { name: "Geeta Mehta", group: "Mehta Family", table: "Table 4" },
+            { name: "Dharmendra Saraswat", group: "Dharmendra Saraswat, Vinita Saraswat & Dharmendra's Guest", table: "Table 3" },
+            { name: "Vinita Saraswat", group: "Dharmendra Saraswat, Vinita Saraswat & Dharmendra's Guest", table: "Table 3" },
+            { name: "Ajay Kumar", group: "Ajay Kumar & Namrata", table: "Table 3" },
+            { name: "Namrata", group: "Ajay Kumar & Namrata", table: "Table 3" },
+            { name: "Samresh Mukherjee", group: "Samresh Mukherjee & Haimanti Mukhopadhyay", table: "Table 3" },
+            { name: "Haimanti Mukhopadhyay", group: "Samresh Mukherjee & Haimanti Mukhopadhyay", table: "Table 3" },
+            { name: "Deepak Das", group: "Das Family", table: "Table 4" },
+            { name: "Shilpi Das", group: "Das Family", table: "Table 4" },
+            { name: "Anil Das", group: "Anil & Bedu Das", table: "Table 4" },
+            { name: "Bedu Das", group: "Anil & Bedu Das", table: "Table 4" },
+            { name: "Umesh", group: "Umesh & Umesh's Guest", table: "Table 2" },
+            { name: "Aprajita", group: "Aprajita & Arbind Jha", table: "Table 2" },
+            { name: "Arbind Jha", group: "Aprajita & Arbind Jha", table: "Table 2" },
+            { name: "Likhit Teja", group: "Likhit Teja & Mahima Akula", table: "Table 5" },
+            { name: "Mahima Akula", group: "Likhit Teja & Mahima Akula", table: "Table 5" },
+            { name: "Barun Patra", group: "Barun Patra", table: "Table 5" },
+            { name: "Nieraj Jain", group: "Nieraj Jain, Megha Shah, Arjun Jain & Reyva Jain", table: "Table 1" },
+            { name: "Deepta Ghate", group: "Deepta Ghate, Sachin Kedar & Gayatri Kedar", table: "Table 1" },
+            { name: "Sachin Kedar", group: "Deepta Ghate, Sachin Kedar & Gayatri Kedar", table: "Table 1" },
+            { name: "Amitabh Kundan", group: "Kundan Family", table: "Table 4" },
+            { name: "Nimmi Kundan", group: "Kundan Family", table: "Table 4" },
+            { name: "Himanshu Khurana", group: "Himanshu Khurana, Quynh Vu, Nova & Masha", table: "Table 9" },
+            { name: "Quynh Vu", group: "Himanshu Khurana, Quynh Vu, Nova & Masha", table: "Table 9" },
+            { name: "Nova", group: "Himanshu Khurana, Quynh Vu, Nova & Masha", table: "Table 9" },
+            { name: "Masha", group: "Himanshu Khurana, Quynh Vu, Nova & Masha", table: "Table 9" },
+            { name: "Justin Samir Malik", group: "Justin Samir Malik & Calista Malik", table: "Table 6" },
+            { name: "Calista Malik", group: "Justin Samir Malik & Calista Malik", table: "Table 6" },
+            { name: "Jeffrey Milsom", group: "Jeffrey & Susie Milsom", table: "Table 1" },
+            { name: "Susie Milsom", group: "Jeffrey & Susie Milsom", table: "Table 1" },
+            { name: "Pakhi Goel", group: "Pakhi Goel, Aman Jain & Neer Jain", table: "Table 1" },
+            { name: "Aman Jain", group: "Pakhi Goel, Aman Jain & Neer Jain", table: "Table 1" },
+            { name: "Neer Jain", group: "Pakhi Goel, Aman Jain & Neer Jain", table: "Table 1" },
+            { name: "Ambrish Pandey", group: "Ambrish Pandey, Nivedita Patni, Avika Pandey & Aavya Pandey", table: "Table 1" },
+            { name: "Arun Arora", group: "Arun & Alka Arora", table: "Table 8" },
+            { name: "Alka Arora", group: "Arun & Alka Arora", table: "Table 8" },
+            { name: "Shruti Agarwal", group: "Shruti & Vineet Agarwal", table: "Table 3" },
+            { name: "Vineet Agarwal", group: "Shruti & Vineet Agarwal", table: "Table 3" },
+            { name: "Balwant Arora", group: "Arora Family", table: "Table 10" },
+            { name: "Kavita Arora", group: "Arora Family", table: "Table 10" },
+            { name: "Ishaan Arora", group: "Arora Family", table: "Table 10" },
+            { name: "Vikram Dhawan", group: "Vikram Dhawan & Guest", table: "Table 8" },
+            { name: "Anant Damle", group: "Anant Damle & Guest", table: "Table 10" },
+            { name: "Pramod Malik", group: "Pramod & Rajul Malik", table: "Table 10" },
+            { name: "Rajul Malik", group: "Pramod & Rajul Malik", table: "Table 10" },
+            { name: "Manish Arora", group: "Manish Arora & Guest", table: "Table 8" },
+            { name: "Sarah Cha", group: "Sarah Cha", table: "Table 2" },
+            { name: "Sharmila Buxani", group: "Sharmila Buxani, Namrata, Navin buxani & Haresh buxani", table: "Table 2" },
+            { name: "Navin buxani", group: "Sharmila Buxani, Namrata, Navin buxani & Haresh buxani", table: "Table 2" },
+            { name: "Haresh buxani", group: "Sharmila Buxani, Namrata, Navin buxani & Haresh buxani", table: "Table 2" },
+            { name: "Prabin Subedi", group: "Prabin Subedi & Shreesti Poudel", table: "Table 9" },
+            { name: "Shreesti Poudel", group: "Prabin Subedi & Shreesti Poudel", table: "Table 9" },
+            { name: "Samir Kauba", group: "Samir & Anu Kauba", table: "Table 10" },
+            { name: "Anu Kauba", group: "Samir & Anu Kauba", table: "Table 10" },
+            { name: "Rahul Patel", group: "Rahul & Sangita Patel", table: "Table 10" },
+            { name: "Sangita Patel", group: "Rahul & Sangita Patel", table: "Table 10" },
+            { name: "Vikrant Khurana", group: "Khurana Family", table: "Table 8" },
+            { name: "Ridhima Khurana", group: "Khurana Family", table: "Table 8" },
+            { name: "Veer Khurana", group: "Khurana Family", table: "Table 8" },
+            { name: "Reva Khurana", group: "Khurana Family", table: "Table 8" }
+        ];
+
+        function handleSearch() {
+            const query = document.getElementById('guestSearch').value.toLowerCase().trim();
+            const resultsDiv = document.getElementById('results');
+
+            if (query.length === 0) {
+                resultsDiv.style.display = 'none';
+                resultsDiv.innerHTML = '';
+                return;
+            }
+
+            // Filter matches based on guest name or names included in their group string
+            const matches = seatingData.filter(item => 
+                item.name.toLowerCase().includes(query) || 
+                item.group.toLowerCase().includes(query)
+            );
+
+            // Deduplicate results based on table and group combination
+            const uniqueResults = [];
+            const seen = new Set();
+            matches.forEach(m => {
+                const identifier = m.table + '-' + m.group;
+                if (!seen.has(identifier)) {
+                    seen.add(identifier);
+                    uniqueResults.push(m);
+                }
+            });
+
+            resultsDiv.style.display = 'block';
+
+            if (uniqueResults.length > 0) {
+                let html = '';
+                uniqueResults.forEach(match => {
+                    html += `
+                        <div class="result-card">
+                            <div class="result-table">
+                                <span>${match.table}</span>
+                                <span class="table-badge">Assigned</span>
+                            </div>
+                            <div class="result-group"><strong>Party / Members:</strong> ${match.group}</div>
+                        </div>
+                    `;
+                });
+                resultsDiv.innerHTML = html;
+            } else {
+                resultsDiv.innerHTML = `<div class="no-results">No guest found matching "${query}". Please check the spelling or try searching by family/group name.</div>`;
+            }
+        }
+    </script>
+</body>
+</html>
