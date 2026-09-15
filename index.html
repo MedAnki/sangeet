@@ -23,8 +23,7 @@
             position: relative;
             width: 100%;
             min-height: 100vh;
-            /* Replace with your hosted image URL if deploying online */
-            background-image: url('background.jpg');
+            background-image: url('Copy of Sangeet Ceremony Welcome Sign_2.jpg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -32,110 +31,137 @@
             flex-direction: column;
             justify-content: flex-end;
             align-items: center;
-            padding: 30px 20px;
+            padding: 40px 20px;
         }
-
 
         .content-overlay {
             position: relative;
-            z-index: 2;
             width: 100%;
-            max-width: 500px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            max-width: 600px;
+            background: rgba(74, 21, 37, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            color: #fff;
             text-align: center;
-            padding-bottom: 20px;
         }
 
-        .event-date {
+        h1 {
+            font-family: 'Playfair Display', serif;
+            color: #d4af37;
+            margin-bottom: 5px;
+            font-size: 2rem;
+            letter-spacing: 1px;
+        }
+
+        p.subtitle {
             color: #f3e5ab;
-            font-size: 1.1rem;
+            margin-bottom: 25px;
+            font-size: 0.95rem;
             letter-spacing: 2px;
             text-transform: uppercase;
-            margin-bottom: 15px;
-            font-weight: 600;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
         }
 
-        .search-box-wrapper {
+        .search-box {
             width: 100%;
-            margin-bottom: 15px;
-        }
-
-        .search-input {
-            width: 100%;
-            padding: 16px 20px;
+            padding: 14px 20px;
             font-size: 1rem;
-            border: 2px solid #d4af37;
             border-radius: 30px;
-            background-color: rgba(255, 255, 255, 0.95);
-            color: #333;
+            border: 1px solid #d4af37;
             outline: none;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            margin-bottom: 15px;
+            text-align: center;
         }
 
-        .search-input:focus {
-            border-color: #fff;
-            background-color: #fff;
-            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+        .search-box::placeholder {
+            color: rgba(255, 255, 255, 0.6);
         }
 
         .results-container {
-            width: 100%;
-            max-height: 280px;
+            max-height: 220px;
             overflow-y: auto;
+            margin-bottom: 15px;
+            border-radius: 10px;
             text-align: left;
-            display: none;
         }
 
-        .result-card {
-            background: rgba(255, 255, 255, 0.92);
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            border-left: 5px solid #d4af37;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .result-table {
-            font-size: 1.1rem;
-            font-weight: bold;
-            color: #4a1525;
-            margin-bottom: 6px;
+        .result-item {
+            padding: 12px 18px;
+            background: rgba(255, 255, 255, 0.08);
+            margin-bottom: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #fff;
+            font-size: 0.95rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .table-badge {
-            background-color: #4a1525;
+        .result-item:hover {
+            background: rgba(212, 175, 55, 0.25);
+            border-left: 4px solid #d4af37;
+        }
+
+        .result-item span.hint {
+            font-size: 0.8rem;
             color: #f3e5ab;
-            padding: 3px 10px;
+            opacity: 0.7;
+        }
+
+        /* Table Card Pop-up */
+        .table-card {
+            display: none;
+            background: linear-gradient(135deg, #2c0b14 0%, #4a1525 100%);
+            border: 2px solid #d4af37;
             border-radius: 15px;
+            padding: 25px;
+            margin-top: 15px;
+            animation: fadeIn 0.4s ease-in-out;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.6);
+            text-align: left;
+        }
+
+        .table-card h3 {
+            color: #d4af37;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .table-card .table-number {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #fff;
+            margin: 8px 0;
+            letter-spacing: 1px;
+        }
+
+        .table-card .party-info {
+            color: #f3e5ab;
             font-size: 0.9rem;
-        }
-
-        .result-group {
-            font-size: 0.95srem;
-            color: #555;
+            margin-top: 8px;
             line-height: 1.4;
-        }
-
-        .no-results {
-            background: rgba(255, 255, 255, 0.9);
-            padding: 15px;
-            border-radius: 10px;
-            color: #4a1525;
-            text-align: center;
-            font-weight: 500;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+            padding-top: 8px;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Scrollbar styling */
+        .results-container::-webkit-scrollbar {
+            width: 6px;
+        }
+        .results-container::-webkit-scrollbar-thumb {
+            background: rgba(212, 175, 55, 0.4);
+            border-radius: 3px;
         }
     </style>
 </head>
@@ -143,16 +169,26 @@
 
     <div class="hero-container">
         <div class="content-overlay">
-            <div class="search-box-wrapper">
-                <input type="text" id="guestSearch" class="search-input" placeholder="Search your name here..." oninput="handleSearch()">
+            <h1>Sangeet Ceremony</h1>
+            <p class="subtitle">Sakshi & Anupam &bull; Sept 20th, 2026</p>
+            
+            <input type="text" id="searchInput" class="search-box" placeholder="Type your name to find your table..." onkeyup="filterNames()">
+            
+            <div id="resultsContainer" class="results-container"></div>
+
+            <!-- Assigned Table Details Card -->
+            <div id="tableCard" class="table-card">
+                <h3 id="guestNameDisplay">Guest Name</h3>
+                <p style="color: #f3e5ab; font-size: 0.85rem;">Your Assigned Seating Location:</p>
+                <div class="table-number" id="tableNumberDisplay">Table --</div>
+                <div class="party-info" id="partyDisplay"><strong>Party Members:</strong> --</div>
             </div>
-            <div id="results" class="results-container"></div>
         </div>
     </div>
 
     <script>
-        // Cleaned dataset matching your mapping (Side info removed, grouped properly)
-        const seatingData = [
+        // Complete seating dataset with full group names and table mapping
+        const guestDatabase = [
             { name: "Gayatri Singh", group: "Gayatri Singh, Mansher Singh, Virat, Yuvraj, Rhea & Maya", table: "Table 7" },
             { name: "Mansher Singh", group: "Gayatri Singh, Mansher Singh, Virat, Yuvraj, Rhea & Maya", table: "Table 7" },
             { name: "Virat", group: "Gayatri Singh, Mansher Singh, Virat, Yuvraj, Rhea & Maya", table: "Table 7" },
@@ -175,11 +211,10 @@
             { name: "Ajay Arora", group: "Ajay & Divya Arora", table: "Table 8" },
             { name: "Divya Arora", group: "Ajay & Divya Arora", table: "Table 8" },
             { name: "Mitali Chikalkar", group: "Mitali Chikalkar & Mithali's Guest", table: "Table 6" },
-            { name: "Mitali's Guest", group: "Mitali Chikalkar & Mithali's Guest", table: "Table 6" },
+            { name: "Mithali's Guest", group: "Mitali Chikalkar & Mithali's Guest", table: "Table 6" },
             { name: "Surender Singh", group: "Surender & Nita Singh", table: "Table 3" },
             { name: "Nita Singh", group: "Surender & Nita Singh", table: "Table 3" },
             { name: "Nawal Kishore Singh", group: "Nawal Kishore & Gayatri Singh", table: "Table 7" },
-            { name: "Gayatri Singh", group: "Nawal Kishore & Gayatri Singh", table: "Table 7" },
             { name: "Sudharshan Malik", group: "Sudharshan Malik", table: "Table 6" },
             { name: "Radhakrishan Gandhi", group: "Radhakrishan & Sabina", table: "Table 6" },
             { name: "Sabina Gandhi", group: "Radhakrishan & Sabina", table: "Table 6" },
@@ -251,53 +286,63 @@
             { name: "Reva Khurana", group: "Khurana Family", table: "Table 8" }
         ];
 
-        function handleSearch() {
-            const query = document.getElementById('guestSearch').value.toLowerCase().trim();
-            const resultsDiv = document.getElementById('results');
+        function filterNames() {
+            const input = document.getElementById('searchInput').value.toLowerCase().trim();
+            const resultsContainer = document.getElementById('resultsContainer');
+            const tableCard = document.getElementById('tableCard');
+            
+            // Hide card when typing a new search
+            tableCard.style.display = 'none';
+            resultsContainer.innerHTML = '';
 
-            if (query.length === 0) {
-                resultsDiv.style.display = 'none';
-                resultsDiv.innerHTML = '';
+            if (input === '') {
                 return;
             }
 
-            // Filter matches based on guest name or names included in their group string
-            const matches = seatingData.filter(item => 
-                item.name.toLowerCase().includes(query) || 
-                item.group.toLowerCase().includes(query)
+            const matchedGuests = guestDatabase.filter(guest => 
+                guest.name.toLowerCase().includes(input) ||
+                guest.group.toLowerCase().includes(input)
             );
 
-            // Deduplicate results based on table and group combination
+            // Deduplicate by name/table combo
             const uniqueResults = [];
             const seen = new Set();
-            matches.forEach(m => {
-                const identifier = m.table + '-' + m.group;
-                if (!seen.has(identifier)) {
-                    seen.add(identifier);
-                    uniqueResults.push(m);
+            matchedGuests.forEach(g => {
+                const key = g.name + '-' + g.table;
+                if (!seen.has(key)) {
+                    seen.add(key);
+                    uniqueResults.push(g);
                 }
             });
 
-            resultsDiv.style.display = 'block';
-
-            if (uniqueResults.length > 0) {
-                let html = '';
-                uniqueResults.forEach(match => {
-                    html += `
-                        <div class="result-card">
-                            <div class="result-table">
-                                <span>${match.table}</span>
-                                <span class="table-badge">Assigned</span>
-                            </div>
-                            <div class="result-group"><strong>Party / Members:</strong> ${match.group}</div>
-                        </div>
-                    `;
-                });
-                resultsDiv.innerHTML = html;
-            } else {
-                resultsDiv.innerHTML = `<div class="no-results">No guest found matching "${query}". Please check the spelling or try searching by family/group name.</div>`;
+            if (uniqueResults.length === 0) {
+                resultsContainer.innerHTML = '<div class="result-item" style="justify-content:center; color: rgba(255,255,255,0.6);">No matching guest found</div>';
+                return;
             }
+
+            uniqueResults.forEach(guest => {
+                const item = document.createElement('div');
+                item.className = 'result-item';
+                item.innerHTML = `<span>${guest.name}</span> <span class="hint">Click to view table</span>`;
+                
+                // Add click listener to show table assignment
+                item.onclick = function() {
+                    showTableAssignment(guest.name, guest.table, guest.group);
+                };
+
+                resultsContainer.appendChild(item);
+            });
+        }
+
+        function showTableAssignment(name, table, group) {
+            document.getElementById('guestNameDisplay').innerText = name;
+            document.getElementById('tableNumberDisplay').innerText = table;
+            document.getElementById('partyDisplay').innerHTML = `<strong>Party Members:</strong> ${group}`;
+            document.getElementById('tableCard').style.display = 'block';
+            document.getElementById('resultsContainer').innerHTML = '';
+            document.getElementById('searchInput').value = name;
         }
     </script>
 </body>
 </html>
+```eof
