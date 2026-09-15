@@ -32,18 +32,22 @@
             justify-content: flex-end;
             align-items: center;
             padding: 40px 20px;
+            transition: background-color 0.4s ease;
         }
 
-        /* Dark overlay gradient at the bottom to make text/search readable */
-        .hero-container::after {
+        /* Dynamic background overlay class applied when search is active or card is shown */
+        .hero-container.active-overlay::after {
             content: '';
             position: absolute;
-            bottom: 0;
+            top: 0;
             left: 0;
             width: 100%;
-            height: 55%;
-            background: linear-gradient(to top, rgba(74, 21, 37, 0.95) 40%, rgba(74, 21, 37, 0.4) 80%, transparent 100%);
+            height: 100%;
+            background: rgba(74, 21, 37, 0.85);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
             z-index: 1;
+            transition: all 0.4s ease;
         }
 
         .content-overlay {
@@ -163,6 +167,26 @@
             line-height: 1.4;
             border-top: 1px solid rgba(212, 175, 55, 0.2);
             padding-top: 6px;
+            margin-bottom: 16px;
+        }
+
+        .reset-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #d4af37;
+            color: #2c0b14;
+            border: none;
+            border-radius: 25px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .reset-btn:hover {
+            background-color: #f3e5ab;
+            transform: translateY(-2px);
         }
 
         .no-results {
@@ -192,7 +216,7 @@
 </head>
 <body>
 
-    <div class="hero-container">
+    <div id="heroContainer" class="hero-container">
         <div class="content-overlay">
             <div class="search-box-wrapper">
                 <input type="text" id="searchInput" class="search-box" placeholder="Type your name to find your table..." onkeyup="filterNames()" autocomplete="off">
@@ -206,6 +230,7 @@
                 <p style="color: #f3e5ab; font-size: 0.85rem;">Your Assigned Seating Location:</p>
                 <div class="table-number" id="tableNumberDisplay">Table --</div>
                 <div class="party-info" id="partyDisplay"><strong>Party Members:</strong> --</div>
+                <button class="reset-btn" onclick="resetSearch()">🔍 Search Another Name</button>
             </div>
         </div>
     </div>
@@ -314,14 +339,19 @@
             const input = document.getElementById('searchInput').value.toLowerCase().trim();
             const resultsContainer = document.getElementById('resultsContainer');
             const tableCard = document.getElementById('tableCard');
+            const heroContainer = document.getElementById('heroContainer');
             
             // Hide table card when typing a new search
             tableCard.style.display = 'none';
             resultsContainer.innerHTML = '';
 
             if (input === '') {
+                heroContainer.classList.remove('active-overlay');
                 return;
             }
+
+            // Activate background blur and darkening overlay as soon as user types
+            heroContainer.classList.add('active-overlay');
 
             const matchedGuests = guestDatabase.filter(guest => 
                 guest.name.toLowerCase().includes(input) ||
@@ -364,6 +394,19 @@
             document.getElementById('tableCard').style.display = 'block';
             document.getElementById('resultsContainer').innerHTML = '';
             document.getElementById('searchInput').value = name;
+        }
+
+        function resetSearch() {
+            const searchInput = document.getElementById('searchInput');
+            const resultsContainer = document.getElementById('resultsContainer');
+            const tableCard = document.getElementById('tableCard');
+            const heroContainer = document.getElementById('heroContainer');
+
+            searchInput.value = '';
+            resultsContainer.innerHTML = '';
+            tableCard.style.display = 'none';
+            heroContainer.classList.remove('active-overlay');
+            searchInput.focus();
         }
     </script>
 </body>
