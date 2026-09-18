@@ -16,7 +16,7 @@
             width: 100%;
             height: 100%;
             overflow-x: hidden;
-            background-color: #4a1525; /* Fallback color matching theme */
+            background-color: #4a1525;
         }
 
         .hero-container {
@@ -35,7 +35,6 @@
             transition: background-color 0.4s ease;
         }
 
-        /* Dynamic background overlay class applied when search is active or card is shown */
         .hero-container.active-overlay::after {
             content: '';
             position: absolute;
@@ -131,7 +130,6 @@
             font-weight: normal;
         }
 
-        /* Table Card Pop-up */
         .table-card {
             display: none;
             width: 100%;
@@ -204,7 +202,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Scrollbar styling */
         .results-container::-webkit-scrollbar {
             width: 6px;
         }
@@ -224,7 +221,6 @@
             
             <div id="resultsContainer" class="results-container"></div>
 
-            <!-- Assigned Table Details Card -->
             <div id="tableCard" class="table-card">
                 <h3 id="guestNameDisplay">Guest Name</h3>
                 <p style="color: #f3e5ab; font-size: 0.85rem;">Your Assigned Seating Location:</p>
@@ -236,7 +232,6 @@
     </div>
 
     <script>
-        // Complete seating dataset with full group names and table mapping
         const guestDatabase = [
             { name: "Gayatri Singh", group: "Gayatri Singh, Mansher Singh, Virat, Yuvraj, Rhea & Maya", table: "Table 7" },
             { name: "Mansher Singh", group: "Gayatri Singh, Mansher Singh, Virat, Yuvraj, Rhea & Maya", table: "Table 7" },
@@ -246,10 +241,10 @@
             { name: "Maya", group: "Gayatri Singh, Mansher Singh, Virat, Yuvraj, Rhea & Maya", table: "Table 7" },
             { name: "Anupam Chauhan", group: "Anupam Chauhan & Sakshi Shiromani", table: "Head Table / Center / Stage" },
             { name: "Sakshi Shiromani", group: "Anupam Chauhan & Sakshi Shiromani", table: "Head Table / Center / Stage" },
-            { name: "Nilida Shiromani", group: "Shiromani Family", table: "Table 4" },
-            { name: "Sudhanshu Shiromani", group: "Shiromani Family", table: "Table 4" },
-            { name: "Shesh Shiromani", group: "Shesh & Shikhar", table: "Table 5" },
-            { name: "Shikhar Shiromani", group: "Shesh & Shikhar", table: "Table 5" },
+            { name: "Nilida Shiromani", group: "Nilida & Sudhanshu Shiromani", table: "Table 4" },
+            { name: "Sudhanshu Shiromani", group: "Nilida & Sudhanshu Shiromani", table: "Table 4" },
+            { name: "Shesh Shiromani", group: "Shikhar & Shesh Shiromani", table: "Table 5" },
+            { name: "Shikhar Shiromani", group: "Shikhar & Shesh Shiromani", table: "Table 5" },
             { name: "Sadhna Chauhan", group: "Sadhna & Virendra Chauhan", table: "Table 7" },
             { name: "Virendra Chauhan", group: "Sadhna & Virendra Chauhan", table: "Table 7" },
             { name: "Abhinav Singh Verma", group: "Abhinav Singh Verma & Anjali Pathak", table: "Table 9" },
@@ -259,20 +254,21 @@
             { name: "Savita Gandhi", group: "Rajendra & Savita Gandhi", table: "Table 6" },
             { name: "Ajay Arora", group: "Ajay & Divya Arora", table: "Table 8" },
             { name: "Divya Arora", group: "Ajay & Divya Arora", table: "Table 8" },
-            { name: "Mitali Chikalkar", group: "Mitali Chikalkar & Mithali's Guest", table: "Table 6" },
-            { name: "Mithali's Guest", group: "Mitali Chikalkar & Mithali's Guest", table: "Table 6" },
+            { name: "Mitali Chikalkar", group: "Mitali Chikalkar & Jwalin Vaidya", table: "Table 6" },
+            { name: "Jwalin Vaidya", group: "Mitali Chikalkar & Jwalin Vaidya", table: "Table 6" },
             { name: "Surender Singh", group: "Surender & Nita Singh", table: "Table 3" },
             { name: "Nita Singh", group: "Surender & Nita Singh", table: "Table 3" },
             { name: "Nawal Kishore Singh", group: "Nawal Kishore & Gayatri Singh", table: "Table 7" },
-            { name: "Sudharshan Malik", group: "Sudharshan Malik", table: "Table 6" },
-            { name: "Radhakrishan Gandhi", group: "Radhakrishan & Sabina", table: "Table 6" },
-            { name: "Sabina Gandhi", group: "Radhakrishan & Sabina", table: "Table 6" },
+            { name: "Gayatri Singh", group: "Nawal Kishore & Gayatri Singh", table: "Table 7" },
+            { name: "Sudharshan Malik", group: "Ray and Sabina Gandhi and Sudharshan Malik", table: "Table 6" },
+            { name: "Radhakrishan Gandhi", group: "Ray and Sabina Gandhi and Sudharshan Malik", table: "Table 6" },
+            { name: "Sabina Gandhi", group: "Ray and Sabina Gandhi and Sudharshan Malik", table: "Table 6" },
             { name: "Harshita Lall", group: "Harshita Lall & Joseph", table: "Table 9" },
             { name: "Joseph", group: "Harshita Lall & Joseph", table: "Table 9" },
-            { name: "Nirmal Das", group: "Das Family", table: "Table 4" },
-            { name: "Dhruv Das", group: "Das Family", table: "Table 5" },
-            { name: "Niraj Das", group: "Niraj & Ryan Das", table: "Table 4" },
-            { name: "Ryan Das", group: "Niraj & Ryan Das", table: "Table 5" },
+            { name: "Nirmal Das", group: "Nirmal Das", table: "Table 4" },
+            { name: "Dhruv Das", group: "Dhruv Das", table: "Table 5" },
+            { name: "Niraj Das", group: "Niraj Das", table: "Table 4" },
+            { name: "Ryan Das", group: "Ryan Das", table: "Table 5" },
             { name: "Geeta Mehta", group: "Mehta Family", table: "Table 4" },
             { name: "Dharmendra Saraswat", group: "Dharmendra Saraswat, Vinita Saraswat", table: "Table 3" },
             { name: "Vinita Saraswat", group: "Dharmendra Saraswat, Vinita Saraswat", table: "Table 3" },
@@ -280,17 +276,17 @@
             { name: "Namrata", group: "Ajay Kumar & Namrata", table: "Table 3" },
             { name: "Samresh Mukherjee", group: "Samresh Mukherjee & Haimanti Mukhopadhyay", table: "Table 3" },
             { name: "Haimanti Mukhopadhyay", group: "Samresh Mukherjee & Haimanti Mukhopadhyay", table: "Table 3" },
-            { name: "Deepak Das", group: "Das Family", table: "Table 4" },
-            { name: "Shilpi Das", group: "Das Family", table: "Table 4" },
+            { name: "Deepak Das", group: "Deepak & Shilpi Das", table: "Table 4" },
+            { name: "Shilpi Das", group: "Deepak & Shilpi Das", table: "Table 4" },
             { name: "Anil Das", group: "Anil & Bedu Das", table: "Table 4" },
             { name: "Bedu Das", group: "Anil & Bedu Das", table: "Table 4" },
-            { name: "Umesh", group: "Umesh & Umesh's Guest", table: "Table 2" },
+            { name: "Umesh", group: "Umesh", table: "Table 2" },
             { name: "Aprajita", group: "Aprajita & Arbind Jha", table: "Table 2" },
             { name: "Arbind Jha", group: "Aprajita & Arbind Jha", table: "Table 2" },
             { name: "Likhit Teja", group: "Likhit Teja & Mahima Akula", table: "Table 5" },
             { name: "Mahima Akula", group: "Likhit Teja & Mahima Akula", table: "Table 5" },
             { name: "Barun Patra", group: "Barun Patra", table: "Table 5" },
-            { name: "Nieraj Jain", group: "Nieraj Jain, Megha Shah, Arjun Jain & Reyva Jain", table: "Table 1" },
+            { name: "Nieraj Jain", group: "Nieraj Jain", table: "Table 1" },
             { name: "Deepta Ghate", group: "Deepta Ghate, Sachin Kedar & Gayatri Kedar", table: "Table 1" },
             { name: "Sachin Kedar", group: "Deepta Ghate, Sachin Kedar & Gayatri Kedar", table: "Table 1" },
             { name: "Amitabh Kundan", group: "Kundan Family", table: "Table 4" },
@@ -309,30 +305,33 @@
             { name: "Ambrish Pandey", group: "Ambrish Pandey", table: "Table 1" },
             { name: "Arun Arora", group: "Arun & Alka Arora", table: "Table 8" },
             { name: "Alka Arora", group: "Arun & Alka Arora", table: "Table 8" },
-            { name: "Shruti Agarwal", group: "Shruti & Vineet Agarwal", table: "Table 3" },
-            { name: "Vineet Agarwal", group: "Shruti & Vineet Agarwal", table: "Table 3" },
-            { name: "Balwant Arora", group: "Arora Family", table: "Table 10" },
-            { name: "Kavita Arora", group: "Arora Family", table: "Table 10" },
-            { name: "Ishaan Arora", group: "Arora Family", table: "Table 10" },
-            { name: "Vikram Dhawan", group: "Vikram Dhawan & Guest", table: "Table 8" },
-            { name: "Anant Damle", group: "Anant Damle & Guest", table: "Table 10" },
+            { name: "Balvant Arora", group: "Balvant, Kavita and Ishaan Arora", table: "Table 10" },
+            { name: "Kavita Arora", group: "Balvant, Kavita and Ishaan Arora", table: "Table 10" },
+            { name: "Ishaan Arora", group: "Balvant, Kavita and Ishaan Arora", table: "Table 10" },
+            { name: "Vikram Dhawan", group: "Vikram Dhawan", table: "Table 8" },
+            { name: "Anant Damle", group: "Anant Damle", table: "Table 10" },
             { name: "Pramod Malik", group: "Pramod & Rajul Malik", table: "Table 10" },
             { name: "Rajul Malik", group: "Pramod & Rajul Malik", table: "Table 10" },
-            { name: "Manish Arora", group: "Manish Arora & Guest", table: "Table 8" },
+            { name: "Sunil Singh", group: "Sunil, Rahul and Vineeta Singh", table: "Table 9" },
+            { name: "Rahul Singh", group: "Sunil, Rahul and Vineeta Singh", table: "Table 9" },
+            { name: "Vineeta Singh", group: "Sunil, Rahul and Vineeta Singh", table: "Table 9" },
+            { name: "Manish Arora", group: "Manish Arora", table: "Table 8" },
             { name: "Sarah Cha", group: "Sarah Cha", table: "Table 2" },
-            { name: "Sharmila Buxani", group: "Sharmila Buxani, Namrata, Navin buxani & Haresh buxani", table: "Table 2" },
-            { name: "Navin buxani", group: "Sharmila Buxani, Namrata, Navin buxani & Haresh buxani", table: "Table 2" },
-            { name: "Haresh buxani", group: "Sharmila Buxani, Namrata, Navin buxani & Haresh buxani", table: "Table 2" },
-            { name: "Prabin Subedi", group: "Prabin Subedi & Shreesti Poudel", table: "Table 9" },
-            { name: "Shreesti Poudel", group: "Prabin Subedi & Shreesti Poudel", table: "Table 9" },
-            { name: "Samir Kauba", group: "Samir & Anu Kauba", table: "Table 10" },
-            { name: "Anu Kauba", group: "Samir & Anu Kauba", table: "Table 10" },
+            { name: "Sharmila Buxani", group: "Sharmila Buxani, Namrata, Navin Buxani & Haresh Buxani", table: "Table 2" },
+            { name: "Navin Buxani", group: "Sharmila Buxani, Namrata, Navin Buxani & Haresh Buxani", table: "Table 2" },
+            { name: "Haresh Buxani", group: "Sharmila Buxani, Namrata, Navin Buxani & Haresh Buxani", table: "Table 2" },
+            { name: "Prabin Subedi", group: "Prabin Subedi & Shreesti Poudel", table: "Table 2" },
+            { name: "Shreesti Poudel", group: "Prabin Subedi & Shreesti Poudel", table: "Table 2" },
+            { name: "Samir Kubba", group: "Samir & Anu Kubba", table: "Table 10" },
+            { name: "Anu Kubba", group: "Samir & Anu Kubba", table: "Table 10" },
             { name: "Rahul Patel", group: "Rahul & Sangita Patel", table: "Table 10" },
             { name: "Sangita Patel", group: "Rahul & Sangita Patel", table: "Table 10" },
             { name: "Vikrant Khurana", group: "Khurana Family", table: "Table 8" },
             { name: "Ridhima Khurana", group: "Khurana Family", table: "Table 8" },
             { name: "Veer Khurana", group: "Khurana Family", table: "Table 8" },
-            { name: "Reva Khurana", group: "Khurana Family", table: "Table 8" }
+            { name: "Reva Khurana", group: "Khurana Family", table: "Table 8" },
+            { name: "Ankur Jain", group: "Ankur & Piu Jain", table: "Table 1" },
+            { name: "Piu Jain", group: "Ankur & Piu Jain", table: "Table 1" }
         ];
 
         function filterNames() {
@@ -341,7 +340,6 @@
             const tableCard = document.getElementById('tableCard');
             const heroContainer = document.getElementById('heroContainer');
             
-            // Hide table card when typing a new search
             tableCard.style.display = 'none';
             resultsContainer.innerHTML = '';
 
@@ -350,7 +348,6 @@
                 return;
             }
 
-            // Activate background blur and darkening overlay as soon as user types
             heroContainer.classList.add('active-overlay');
 
             const matchedGuests = guestDatabase.filter(guest => 
@@ -358,7 +355,6 @@
                 guest.group.toLowerCase().includes(input)
             );
 
-            // Deduplicate by name/table combo
             const uniqueResults = [];
             const seen = new Set();
             matchedGuests.forEach(g => {
